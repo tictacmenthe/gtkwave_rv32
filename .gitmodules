@@ -1,0 +1,3 @@
+[submodule "modules/instruction-decoder"]
+	path = modules/instruction-decoder
+	url = https://github.com/ics-jku/instruction-decoder.git
