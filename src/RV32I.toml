@@ -5,6 +5,7 @@ width = 32
 names = [
     "format_1-0",
     "format_2-0",
+    "format_2-1",
     "format_3-0",
     "format_4-0",
     "format_5-0",
@@ -70,6 +71,12 @@ parts = [
         "u32",
     ],
     [
+        "csr",
+        12,
+        "VInt",
+        "hex",
+    ],
+    [
         "imm",
         32,
         "VInt",
@@ -86,6 +93,7 @@ parts = [
 names = [
     "type_1-0",
     "type_2-0",
+    "type_2-1",
     "type_3-0",
     "type_4-0",
     "type_5-0",
@@ -145,6 +153,31 @@ top = 4
 bot = 0
 
 [[types.type_2-0]]
+name = "none"
+top = 6
+bot = 0
+
+[[types.type_2-1]]
+name = "csr"
+top = 11
+bot = 0
+
+[[types.type_2-1]]
+name = "rs1_Register_int"
+top = 4
+bot = 0
+
+[[types.type_2-1]]
+name = "none"
+top = 14
+bot = 12
+
+[[types.type_2-1]]
+name = "rd_Register_int"
+top = 4
+bot = 0
+
+[[types.type_2-1]]
 name = "none"
 top = 6
 bot = 0
@@ -340,6 +373,9 @@ type = "type_1-0"
 [format_2-0]
 type = "type_2-0"
 
+[format_2-1]
+type = "type_2-1"
+
 [format_3-0]
 type = "type_3-0"
 
@@ -463,6 +499,9 @@ lh = "$name$ %rd_Register_int%, %imm%(%rs1_Register_int%)"
 lhu = "$name$ %rd_Register_int%, %imm%(%rs1_Register_int%)"
 lw = "$name$ %rd_Register_int%, %imm%(%rs1_Register_int%)"
 
+[format_2-1.repr]
+default = "$name$ %rd_Register_int%, %rs1_Register_int%, %csr%"
+
 [format_3-0.repr]
 default = "$name$ %rd_Register_int%, %himm%"
 
@@ -571,6 +610,36 @@ match = 0x3013
 [format_2-0.instructions.xori]
 mask = 0x707f
 match = 0x4013
+
+[format_2-1.instructions.csrrw]
+mask = 0x707f
+match = 0x1073
+unsigned = true
+
+[format_2-1.instructions.csrrs]
+mask = 0x707f
+match = 0x2073
+unsigned = true
+
+[format_2-1.instructions.csrrc]
+mask = 0x707f
+match = 0x3073
+unsigned = true
+
+[format_2-1.instructions.csrrwi]
+mask = 0x707f
+match = 0x5073
+unsigned = true
+
+[format_2-1.instructions.csrrsi]
+mask = 0x707f
+match = 0x6073
+unsigned = true
+
+[format_2-1.instructions.csrrci]
+mask = 0x707f
+match = 0x7073
+unsigned = true
 
 [format_3-0.instructions.auipc]
 mask = 0x7f
