@@ -527,6 +527,22 @@ default = "$name$ %rd_Register_int%, %rs1_Register_int%, %shamtw%"
 mask = 0xfe00707f
 match = 0x33
 
+[format_1-0.instructions.mul]
+mask = 0xfe00707f
+match = 0x2000033
+
+[format_1-0.instructions.mulh]
+mask = 0xfe00707f
+match = 0x2001033
+
+[format_1-0.instructions.mulhsu]
+mask = 0xfe00707f
+match = 0x2002033
+
+[format_1-0.instructions.mulhu]
+mask = 0xfe00707f
+match = 0x2003033
+
 [format_1-0.instructions.and]
 mask = 0xfe00707f
 match = 0x7033

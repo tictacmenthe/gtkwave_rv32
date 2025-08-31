@@ -1,7 +1,10 @@
+use std::io::{Write};
 use instruction_decoder::Decoder;
 fn main() -> Result<(), Box<dyn std::error::Error>>{
     let mut decoder = Decoder::new(&vec![include_str!("RV32I.toml").to_string()]).unwrap();
 
+    let stdout = std::io::stdout();
+    let mut handle = stdout.lock();
 
     loop {
         let mut line = String::new();
@@ -14,12 +17,24 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
             // println!("Decoded: {}", instr);
 
             if let Ok(res) = decoder.decode_from_u32(instr, 32) {
-                print!("{:?}", res);
-            } else {
-                // eprintln!("Error: {}", instr);
+                // print!("{:?}\n", res);
+                if let Err(e) = write!(handle, "{:?}", res) {
+                    if e.kind() == std::io::ErrorKind::BrokenPipe {
+                        return Ok(());
+                    } else {
+                        return Err(Box::new(e));
+                    }
+                }
             }
         }
-        println!("");
+
+        if let Err(e) = writeln!(handle, "") {
+            if e.kind() == std::io::ErrorKind::BrokenPipe {
+                return Ok(());
+            } else {
+                return Err(Box::new(e));
+            }
+        }
     }
     return Ok(());
 }
